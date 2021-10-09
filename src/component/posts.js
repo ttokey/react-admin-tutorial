@@ -65,6 +65,4 @@ export const PostCreate = props => (
             <TextInput multiline source="body"/>
         </SimpleForm>
     </Create>
-
-
 )

@@ -1,7 +1,7 @@
 import {fetchUtils} from 'react-admin';
 import {stringify} from 'query-string';
 
-const apiUrl = 'https://my.api.com/';
+const apiUrl = 'http://localhost:1234';
 const httpClient = fetchUtils.fetchJson;
 
 export default {
@@ -17,7 +17,7 @@ export default {
 
         return httpClient(url).then(({headers, json}) => ({
             data: json,
-            total: parseInt(headers.get('content-range').split('/').pop(), 10),
+            total: parseInt(headers.get('content-range'), 10),
         }));
     },
 
@@ -49,6 +49,7 @@ export default {
 
         return httpClient(url).then(({headers, json}) => ({
             data: json,
+            // total: 30,
             total: parseInt(headers.get('content-range').split('/').pop(), 10),
         }));
     },

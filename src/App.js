@@ -4,17 +4,21 @@ import {Admin, Resource} from 'react-admin';
 import Dashboard from "./Dashboard";
 import authProvider from "./service/authProvider";
 import jsonServerProvider from 'ra-data-json-server';
-import {UserList} from "./component/users";
-import {PostCreate, PostEdit, PostList} from "./component/posts";
+import {envInfos} from "./component/envInfos";
+import myDataProvider from "./service/myDataProvider";
+import {apiInfoEdit, apiInfoList} from "./component/apiInfos";
+import {transferList} from "./component/Transfer";
 
-const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
+// const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 const envInfoProvider = jsonServerProvider('http://localhost:1234');
 
 const App = () => (
-    <Admin dataProvider={dataProvider} dashboard={Dashboard} authProvider={authProvider}>
-        <Resource name="users" list={UserList}/>
-        <Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate}/>
-        {/*<Resource name="envInfo" list={envInfos}/>*/}
+    <Admin dataProvider={myDataProvider} dashboard={Dashboard} authProvider={authProvider}>
+        {/*<Resource name="users" list={UserList}/>*/}
+        {/*<Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate}/>*/}
+        <Resource name="envInfo" list={envInfos}/>
+        <Resource name="apiInfo" list={apiInfoList} edit={apiInfoEdit}/>
+        <Resource name="transfer" list={transferList}/>
     </Admin>
 );
 
