@@ -16,10 +16,11 @@ export default {
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         return httpClient(url).then(({headers, json}) => ({
-            data: json,
-            total: parseInt(headers.get('content-range'), 10),
+            data: json.range(0, 10),
+            total: Object.keys(json).length,
         }));
     },
+
 
     getOne: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`).then(({json}) => ({
