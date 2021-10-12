@@ -7,21 +7,21 @@ import jsonServerProvider from 'ra-data-json-server';
 import myDataProvider from "./service/myDataProvider";
 import {apiInfoEdit, apiInfoList} from "./component/apiInfos";
 import DiffAndTransfer, {transferEdit} from "./component/diffAndTransfer";
-import {layout} from "./component/layout";
 import {CustomEnvInfoList} from "./component/envInfos";
+import {transferList} from "./component/Transfer";
 
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 const envInfoProvider = jsonServerProvider('http://localhost:1234');
 
 
 const App = () => (
-    <Admin layout={layout} dataProvider={myDataProvider} dashboard={Dashboard} authProvider={authProvider}>
+    <Admin dataProvider={myDataProvider} dashboard={Dashboard} authProvider={authProvider}>
         {/*<Resource name="users" list={UserList}/>*/}
         {/*<Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate}/>*/}
         <Resource name="envInfo" list={CustomEnvInfoList}/>
         <Resource name="apiInfo" list={apiInfoList} edit={apiInfoEdit}/>
-        {/*<Resource name="transfer" list={transferList}/>*/}
-        <Resource name="transfer" options={{label: 'diffAndTransfer'}} list={DiffAndTransfer} edit={transferEdit}/>
+        <Resource name="transfer" list={transferList}/>
+        <Resource name="temp" options={{label: 'diffAndTransfer'}} list={DiffAndTransfer} edit={transferEdit}/>
     </Admin>
 );
 

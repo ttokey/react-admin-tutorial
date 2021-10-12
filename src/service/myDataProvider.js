@@ -16,7 +16,7 @@ export default {
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         return httpClient(url).then(({headers, json}) => ({
-            data: json.range(0, 10),
+            data: json,
             total: Object.keys(json).length,
         }));
     },

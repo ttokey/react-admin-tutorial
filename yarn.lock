@@ -1151,6 +1151,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@coreui/react@^4.0.0-rc.4":
+  version "4.0.0-rc.4"
+  resolved "https://registry.yarnpkg.com/@coreui/react/-/react-4.0.0-rc.4.tgz#6bc3022b368ecadd3c9a8ceb3f7f36665a870b3c"
+  integrity sha512-g3i6HNtZkl4ojR77Ot19cage1D6fOL/9XVTBECBQlI0OBDdv9Vl4SgJ/vk84pxAQZEEcbUHZ/bBYa/NRXxOjkg==
+
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
