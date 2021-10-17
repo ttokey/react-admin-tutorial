@@ -1,144 +1,149 @@
 import * as React from 'react';
-import {Component} from 'react';
-import {Datagrid, Edit, EditButton, List, SelectField, SimpleForm, TextField, TextInput,} from 'react-admin';
-import {
-    CCol,
-    CContainer,
-    CRow,
-    CTable,
-    CTableBody,
-    CTableDataCell,
-    CTableHead,
-    CTableHeaderCell,
-    CTableRow
-} from "@coreui/react";
+import {useEffect, useState} from 'react';
+import {CButton, CCol, CContainer, CRow} from "@coreui/react";
 import Select from "react-select";
+import {getDiffStatusList} from "../service/transferDataProvider";
+import {MDBDataTableV5} from "mdbreact";
 
-class DiffAndTransfer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedSource: "dev",
-            selectedTarget: "dev"
 
-        }
+export const DiffAndTransfer = (props) => {
+    const [column, setColumn] = useState([]);
+    const [diffStatus, setDiffStatus] = useState([]);
+    const [collection, setCollection] = useState('');
+    const [sourceEnv, setSourceEnv] = useState('');
+    const [targetEnv, setTargetEnv] = useState('');
+    const [checkbox1, setCheckbox1] = useState([]);
+    const [data, setData] = useState({});
+
+    const handleSelect = (value, setFunction) => {
+        setFunction(value.realValue);
     };
 
-    handleSourceChange = (value) => {
-        this.setState({selectedSource: value.value}, () =>
-            console.log(`selectedSource : `, this.state.selectedSource, this.state.selectedTarget)
-        );
+    useEffect(() => {
+            console.log("collection : {}, sourceEnv : {}, targetEnv : {}", collection, sourceEnv, targetEnv)
+        },
+        [collection, sourceEnv, targetEnv]
+    )
+
+    useEffect(() => {
+            console.log("diffStatus : ", diffStatus);
+            setData({
+                    columns: [
+                        {
+                            label: 'id',
+                            field: 'id',
+                            sort: 'asc',
+                            width: 200,
+                            attributes: {
+                                'aria-controls': 'DataTable',
+                                'aria-label': 'Name',
+                            },
+                        },
+                        {
+                            label: 'nluId',
+                            field: 'fields.nluId',
+                            sort: 'asc',
+                            width: 200
+                        },
+                        {
+                            label: 'confidenceCutScore',
+                            field: 'fields.confidenceCutScore',
+                            sort: 'asc',
+                            width: 200
+                        },
+                        {
+                            label: 'url',
+                            field: 'status',
+                            sort: 'asc',
+                            width: 200
+                        },
+                    ],
+                    rows: diffStatus
+                }
+            );
+        }, [diffStatus]
+    )
+
+    useEffect(() => {
+            console.log("data : ", data);
+        },
+        [data]
+    )
+
+    const getDiffStatus = async () => {
+        const response = await getDiffStatusList(collection, sourceEnv, targetEnv);
+        console.log(response);
+        setDiffStatus(response);
     };
 
-    handleTargetChange = (value) => {
-        this.setState({selectedTarget: value.value}, () =>
-            console.log(`selectedSource : `, this.state.selectedSource, this.state.selectedTarget)
-        );
+    const showLogs2 = (e) => {
+        setCheckbox1(e);
     };
 
+    return (
+        <CContainer>
+            <CRow>
+                <CCol md={2}>
+                    <div>collection</div>
+                    <Select
+                        onChange={(e) => handleSelect(e, setCollection)}
+                        options={collectionOption}
+                    />
 
-    render() {
-        return (
-            <div>
-                <CContainer>
-                    <CRow xs={{gutter: 2}}>
-                        <CCol xs={{span: 6}}>
-                            <div>source</div>
-                        </CCol>
-                        <CCol xs={{span: 6}}>
-                            <Select
-                                onChange={this.handleSourceChange}
-                                options={options}/>
-                        </CCol>
-                        <CCol xs={{span: 6}}>
-                            <div>target</div>
-                        </CCol>
-                        <CCol xs={{span: 6}}>
-                            <Select
-                                onChange={this.handleTargetChange}
-                                options={options}/>
-                        </CCol>
-                        <CCol xs={{span: 6}}>
-                            <button>DiffStatus</button>
-                        </CCol>
-                    </CRow>
-                </CContainer>
+                </CCol>
+                <CCol md={2}>
+                    <div>source</div>
+                    <Select
+                        onChange={(value) => handleSelect(value, setSourceEnv)}
+                        options={envOption}
+                    />
+                </CCol>
+                <CCol md={2}>
+                    <div>target</div>
+                    <Select
+                        onChange={(value) => handleSelect(value, setTargetEnv)}
+                        options={envOption}
+                    />
+                </CCol>
+                <CCol md={2}>
+                    <CButton color="secondary" onClick={getDiffStatus}>diff status</CButton>
+                </CCol>
+            </CRow>
 
-                <CTable bordered>
-                    <CTableHead>
-                        <CTableRow>
-                            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">haha</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Heading</CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                        <CTableRow>
-                            <CTableHeaderCell scope="row">1</CTableHeaderCell>
-                            <CTableDataCell>Mark</CTableDataCell>
-                            <CTableDataCell>Otto</CTableDataCell>
-                            <CTableDataCell>@mdo</CTableDataCell>
-                        </CTableRow>
-                        <CTableRow>
-                            <CTableHeaderCell scope="row">2</CTableHeaderCell>
-                            <CTableDataCell>Jacob</CTableDataCell>
-                            <CTableDataCell>Thornton</CTableDataCell>
-                            <CTableDataCell>@fat</CTableDataCell>
-                        </CTableRow>
-                        <CTableRow>
-                            <CTableHeaderCell scope="row">3</CTableHeaderCell>
-                            <CTableDataCell colSpan="2">Larry the Bird</CTableDataCell>
-                            <CTableDataCell>@twitter</CTableDataCell>
-                        </CTableRow>
-                    </CTableBody>
-                </CTable>
-            </div>
-        );
-    }
+            <MDBDataTableV5
+                hover
+                entriesOptions={[5, 20, 25]}
+                entries={5}
+                pagesAmount={4}
+                data={data}
+                // checkbox
+                //
+                // headCheckboxID='id6'
+                // bodyCheckboxID='checkboxes6'
+                // getValueCheckBox={(e) => {
+                //     showLogs2(e);
+                // }}
+                // getValueAllCheckBoxes={(e) => {
+                //     showLogs2(e);
+                // }}
+                // multipleCheckboxes
+            />
+        </CContainer>
+    );
 }
 
-const options = [
-    {value: "dev", label: "dev"},
-    {value: "test", label: "test"},
-    {value: "prod", label: "prod"},
-]
 
-class MyList extends Component {
-    render() {
-        const data = {...this.props.children};
+const collectionOption = [
+    {value: 'nlu', label: 'nlu', realValue: 'nlu'},
+    {value: 'view', label: 'view', realValue: 'view'},
+    {value: 'control', label: 'control', realValue: 'control'},
+];
 
-        return (
-            <List {...data} title="transfer List">
-                <Datagrid>
-                    <TextField source="id"/>
-                    <TextField source="fields"/>
-                    <TextField source="status"/>
-                    <TextField source="sourceData"/>
-                    <TextField source="diffData"/>
-                    <SelectField source="gender" choices={[
-                        {id: 'M', name: 'Male'},
-                        {id: 'F', name: 'Female'},
-                    ]}/>
-                    <EditButton/>
-                </Datagrid>
-            </List>
-        );
-    }
-}
+const envOption = [
+    {value: "local", label: "local", realValue: "local"},
+    {value: "local2", label: "local2", realValue: "local2"},
+    {value: "dev", label: "dev", realValue: "dev"},
+    {value: "test", label: "test", realValue: "test"},
+    {value: "prod", label: "prod", realValue: "prod"},
+];
 
-export const transferEdit = props => (
-    <Edit {...props}>
-        <SimpleForm>
-            <TextInput disabled source="id"/>
-            <TextInput source="collection"/>
-            <TextInput source="displayName"/>
-            <TextInput source="list.status"/>
-            <TextInput source="list.sourceData"/>
-            <TextInput source="list.targetData"/>
-            <TextInput source="list.diffData"/>
-        </SimpleForm>
-    </Edit>
-)
-
-export default DiffAndTransfer;
