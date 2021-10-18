@@ -28,7 +28,6 @@ export const CustomEnvInfoList = () => {
             filter: {},
         }
     });
-    
 
     if (loading) {
         return <Loading/>
