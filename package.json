@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.22.0",
     "lodash": "^4.17.21",
+    "mdbreact": "^5.1.0",
     "prop-types": "^15.7.2",
     "query-string": "^7.0.1",
     "ra-data-json-server": "^3.18.3",

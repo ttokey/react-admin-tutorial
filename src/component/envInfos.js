@@ -1,15 +1,12 @@
 import * as React from "react";
-import {Fragment, useState} from "react";
-import keyBy from 'lodash/keyBy';
-import {Datagrid, List, Loading, Pagination, TextField, useQuery} from 'react-admin';
+import {Datagrid, Edit, List, SimpleForm, TextField, TextInput} from 'react-admin';
 
-export const envInfos = props => (
+export const envInfoList = props => (
     <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
             <TextField source="env"/>
             <TextField source="url"/>
-            {/*<TextField source="date"/>*/}
             <TextField source="user"/>
         </Datagrid>
     </List>
@@ -28,34 +25,18 @@ export const CustomEnvInfoList = () => {
             filter: {},
         }
     });
-
-    if (loading) {
-        return <Loading/>
-    }
-    if (error) {
-        return <p>ERROR: {error}</p>
-    }
-
-    return (
-        <Fragment>
-            <Datagrid
-                data={keyBy(data, 'id')}
-                ids={data.map(({id}) => id)}
-                currentSort={sort}
-                setSort={(field, order) => setSort({field, order})}
-            >
-                <TextField source="id"/>
-                <TextField source="env"/>
-                <TextField source="url"/>
-                <TextField source="user"/>
-            </Datagrid>
-            <Pagination
-                page={page}
-                setPage={setPage}
-                perPage={perPage}
-                setPerPage={setPerPage}
-                total={total}
-            />
-        </Fragment>
-    );
 }
+const PostTitle = ({record}) => {
+    return <span>EnvInfo {record ? `"${record.env}"` : ''}</span>;
+};
+
+export const envInfoEdit = props => (
+    <Edit title={<PostTitle/>} {...props}>
+        <SimpleForm>
+            <TextInput disabled source="id"/>
+            <TextInput source="env"/>
+            <TextInput source="url"/>
+        </SimpleForm>
+    </Edit>
+);
+
