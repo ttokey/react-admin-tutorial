@@ -26,6 +26,7 @@ export const DiffAndTransfer = (props) => {
     )
 
     useEffect(() => {
+
             console.log("diffStatus : ", diffStatus);
             setData({
                     columns: [

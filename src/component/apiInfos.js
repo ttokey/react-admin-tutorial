@@ -1,20 +1,46 @@
 import * as React from "react";
-import {AutocompleteArrayInput, Datagrid, Edit, List, SelectInput, SimpleForm, TextField, TextInput} from 'react-admin';
+import {useEffect} from "react";
+import {
+    AutocompleteArrayInput,
+    ChipField,
+    Datagrid,
+    Edit,
+    List,
+    SelectInput,
+    SimpleForm,
+    SingleFieldList,
+    TextField,
+    TextInput,
+} from 'react-admin';
 
-export const apiInfoList = props => (
-    <List {...props}>
-        <Datagrid rowClick="edit">
-            <TextField source="id"/>
-            <TextField source="collection"/>
-            <TextField source="displayName"/>
-            <TextField source="urlInfo.serviceName"/>
-            <TextField source="fields"/>
-            <TextField source="notCheckFields"/>
-            <TextField source="date"/>
-            <TextField source="user"/>
-        </Datagrid>
-    </List>
-);
+export const ApiInfoList = (props) => {
+    useEffect(() => {
+            const pro = {...props};
+            console.log(pro);
+            console.log(pro.children)
+            console.log(props.basePath);
+        },
+        []
+    )
+
+
+    return (
+        <List {...props}>
+            <Datagrid rowClick="edit">
+                <TextField source="id"/>
+                <TextField source="collection"/>
+                <TextField source="displayName"/>
+                <TextField source="urlInfo.serviceName"/>
+                <TextField source="fields"/>
+                <SingleFieldList>
+                    <ChipField source="fields"/>
+                </SingleFieldList>
+                <TextField source="notCheckFields"/>
+            </Datagrid>
+        </List>
+    );
+}
+
 
 const PostTitle = ({record}) => {
     return <span>ApiInfo {record ? `"${record.displayName}"` : ''}</span>;
@@ -41,7 +67,7 @@ const notCheckFieldChoice = [
 ];
 
 // TODO:: create 할 때 자동으로 추가할 수 있도록 하면 좋을 듯
-export const apiInfoEdit = props => (
+export const ApiInfoEdit = props => (
     <Edit title={<PostTitle/>} {...props}>
         <SimpleForm>
             <TextInput disabled source="id"/>
@@ -50,14 +76,12 @@ export const apiInfoEdit = props => (
             <TextInput source="displayName"/>
             <AutocompleteArrayInput source="fields" create choices={fieldChoice}/>
             <AutocompleteArrayInput source="notCheckFields" choices={notCheckFieldChoice}/>
-            <TextInput source="urlInfo"/>
             <TextInput source="urlInfo.serviceName"/>
             <TextInput source="urlInfo.getAPI"/>
             <TextInput source="urlInfo.getByIdAPI"/>
             <TextInput source="urlInfo.postAPI"/>
             <TextInput source="urlInfo.deleteAPI"/>
             <TextInput source="urlInfo.putAPI"/>
-            <TextInput multiline source="body"/>
         </SimpleForm>
     </Edit>
 );
