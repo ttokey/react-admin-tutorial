@@ -13,8 +13,6 @@ import {
 } from "@coreui/react";
 
 export const DiffModal = (props) => {
-    console.log("props", props);
-
     return (
         <CModal size="xl" visible={props.visible} onClose={() => props.setVisible(false)}>
             <CModalTitle>edit {props.env}</CModalTitle>

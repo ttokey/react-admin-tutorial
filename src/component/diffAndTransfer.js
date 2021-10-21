@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {CButton, CCol, CContainer, CRow} from "@coreui/react";
 import Select from "react-select";
-import {getDiff, getDiffStatusList} from "../service/transferDataProvider";
+import {getDiff, getDiffStatusList, postTransfer} from "../service/transferDataProvider";
 import DataTable from 'react-data-table-component'
 import {DiffModal} from "./DiffModal";
 
@@ -14,11 +14,36 @@ export const DiffAndTransfer = (props) => {
     const [targetEnv, setTargetEnv] = useState('');
     const [data, setData] = useState([]);
     const [visible, setVisible] = useState(false);
-    const [diffData, setDiffData] = useState({});
+    const [diffData, setDiffData] = useState({
+        id: "",
+        fields: [],
+        status: "",
+        sourceData: "",
+        targetData: "",
+        diffData: "",
+    });
+
+    const [selectedRows, setSelectedRows] = React.useState([]);
+    const [toggleCleared, setToggleCleared] = React.useState(false);
 
     const handleSelect = (value, setFunction) => {
         setFunction(value.realValue);
     };
+
+    const handleRowSelected = React.useCallback(state => {
+        setSelectedRows(state.selectedRows);
+        // console.log("selectedRows", selectedRows);
+    }, []);
+
+    const handleTransfer = () => {
+        if (window.confirm(`정말로 이관하시겠습니까?`)) {
+            setToggleCleared(!toggleCleared);
+            doTransfer(selectedRows.map(row => row.id)).then(() =>
+                getDiffStatus()
+            );
+        }
+    };
+
 
     useEffect(() => {
             console.log("collection : {}, sourceEnv : {}, targetEnv : {}", collection, sourceEnv, targetEnv)
@@ -70,12 +95,15 @@ export const DiffAndTransfer = (props) => {
         setDiffData(response);
     };
 
-
     const getDiffStatus = async () => {
         const response = await getDiffStatusList(collection, sourceEnv, targetEnv);
         console.log(response.list);
         setDiffStatus(response.list);
     };
+
+    const doTransfer = async (ids) => {
+        const response = await postTransfer(collection, sourceEnv, targetEnv, ids);
+    }
 
 
     return (
@@ -106,15 +134,19 @@ export const DiffAndTransfer = (props) => {
                 <CCol md={2}>
                     <CButton color="secondary" onClick={getDiffStatus}>diff status</CButton>
                 </CCol>
+                <CCol md={2}>
+                    <CButton color="secondary" onClick={handleTransfer}>transfer</CButton>
+                </CCol>
             </CRow>
 
             <DataTable
                 columns={column}
                 data={data}
                 selectableRows
-                // expandableRows
                 pagination
                 onRowClicked={diffShow}
+                onSelectedRowsChange={handleRowSelected}
+                clearSelectedRows={toggleCleared}
                 // expandableRowsComponent={ExpandedComponent2}
             />
 
