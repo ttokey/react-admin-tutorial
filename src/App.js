@@ -20,7 +20,7 @@ import 'mdbreact/dist/css/mdb.css';
 const envInfoProvider = jsonServerProvider('http://localhost:1234');
 
 const App = () => {
-    
+
     return (
         <Admin dataProvider={myDataProvider} dashboard={Dashboard} authProvider={authProvider}>
             {/*<Resource name="users" list={UserList}/>*/}
@@ -28,7 +28,7 @@ const App = () => {
             <Resource name="envInfo" list={envInfoList} create={envInfoCreate} edit={envInfoEdit}/>
             <Resource name="apiInfo" list={ApiInfoList} edit={ApiInfoEdit}/>
             {/*<Resource name="transfer" list={transferList}/>*/}
-            <Resource name="temp" options={{label: 'diffAndTransfer'}} list={DiffAndTransfer}/>
+            <Resource name="diffAndTransfer" options={{label: 'diffAndTransfer'}} list={DiffAndTransfer}/>
         </Admin>
     );
 };

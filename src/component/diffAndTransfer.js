@@ -8,7 +8,12 @@ import {DiffModal} from "./DiffModal";
 
 export const DiffAndTransfer = (props) => {
     const [column, setColumn] = useState([]);
-    const [diffStatus, setDiffStatus] = useState([]);
+    const [diffStatus, setDiffStatus] = useState({
+        list: [],
+        fields: [],
+        collection: "",
+        displayName: "",
+    });
     const [collection, setCollection] = useState('');
     const [sourceEnv, setSourceEnv] = useState('');
     const [targetEnv, setTargetEnv] = useState('');
@@ -54,11 +59,28 @@ export const DiffAndTransfer = (props) => {
 
     useEffect(() => {
             setColumn(makeColumns);
-            setData(diffStatus);
-            console.log("data : ", data);
-            console.log("column : ", column);
+            setData(diffStatus.list);
+            const toMap = diffStatus.fields.map(field => {
+                makeColumn(field);
+            });
+
+            console.log('to Map : ', toMap);
+            console.log('makeColumns : ', makeColumns);
+
+            // console.log("data : ", data);
+            // console.log("column : ", column);
+            // console.log("diffStatus: ", diffStatus);
         }, [diffStatus]
     )
+
+    const makeColumn = (field) => {
+        let jsonMap = new Object();
+        jsonMap.name = 'nluId';
+        jsonMap.selector = row => row.fields.field;
+        jsonMap.sortable = true;
+        console.log(jsonMap);
+        return jsonMap;
+    }
 
     const makeColumns = [
         {
@@ -97,8 +119,9 @@ export const DiffAndTransfer = (props) => {
 
     const getDiffStatus = async () => {
         const response = await getDiffStatusList(collection, sourceEnv, targetEnv);
-        console.log(response.list);
-        setDiffStatus(response.list);
+        // console.log(response.list);
+        console.log('diffStatus : ', response);
+        setDiffStatus(response);
     };
 
     const doTransfer = async (ids) => {
