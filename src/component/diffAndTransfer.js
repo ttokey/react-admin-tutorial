@@ -37,7 +37,6 @@ export const DiffAndTransfer = (props) => {
 
     const handleRowSelected = React.useCallback(state => {
         setSelectedRows(state.selectedRows);
-        // console.log("selectedRows", selectedRows);
     }, []);
 
     const handleTransfer = () => {
@@ -60,29 +59,22 @@ export const DiffAndTransfer = (props) => {
     useEffect(() => {
             setColumn(makeColumns);
             setData(diffStatus.list);
-            const toMap = diffStatus.fields.map(field => {
-                makeColumn(field);
-            });
-
-            console.log('to Map : ', toMap);
-            console.log('makeColumns : ', makeColumns);
-
-            // console.log("data : ", data);
-            // console.log("column : ", column);
-            // console.log("diffStatus: ", diffStatus);
         }, [diffStatus]
     )
 
-    const makeColumn = (field) => {
-        let jsonMap = new Object();
-        jsonMap.name = 'nluId';
-        jsonMap.selector = row => row.fields.field;
-        jsonMap.sortable = true;
-        console.log(jsonMap);
-        return jsonMap;
+    const makeColumn = () => {
+        const toMap = diffStatus.fields.map(field => {
+                let jsonMap = new Object();
+                jsonMap.name = field;
+                jsonMap.selector = row => row.fields[field];
+                jsonMap.sortable = true;
+                return jsonMap;
+            }
+        );
+        return toMap;
     }
 
-    const makeColumns = [
+    const defaultColumns = [
         {
             name: 'id',
             selector: row => row.id,
@@ -94,17 +86,15 @@ export const DiffAndTransfer = (props) => {
             selector: row => row.status,
             sortable: true,
         },
-        {
-            name: 'nluId',
-            selector: row => row.fields.nluId,
-            sortable: true,
-        },
-        {
-            name: 'confidenceCutScore',
-            selector: row => row.fields.confidenceCutScore,
-            sortable: true,
-        },
-    ];
+    ]
+
+    const makeColumns = () => {
+        const result = [
+            ...defaultColumns,
+            ...makeColumn(),
+        ]
+        return result;
+    }
 
 
     // data provides access to your row data

@@ -1,7 +1,6 @@
 import * as React from "react";
 import {useEffect} from "react";
 import {
-    AutocompleteArrayInput,
     ChipField,
     Datagrid,
     Edit,
@@ -71,11 +70,11 @@ export const ApiInfoEdit = props => (
     <Edit title={<PostTitle/>} {...props}>
         <SimpleForm>
             <TextInput disabled source="id"/>
-            {/*<TextInput source="collection"/>*/}
+            <TextInput source="collection"/>
             <SelectInput source="collection" allowEmpty choices={collectionChoice}/>
             <TextInput source="displayName"/>
-            <AutocompleteArrayInput source="fields" create choices={fieldChoice}/>
-            <AutocompleteArrayInput source="notCheckFields" choices={notCheckFieldChoice}/>
+            {/*<AutocompleteArrayInput source="fields" create choices={fieldChoice}/>*/}
+            {/*<AutocompleteArrayInput source="notCheckFields" choices={notCheckFieldChoice}/>*/}
             <TextInput source="urlInfo.serviceName"/>
             <TextInput source="urlInfo.getAPI"/>
             <TextInput source="urlInfo.getByIdAPI"/>
