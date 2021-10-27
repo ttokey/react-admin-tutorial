@@ -7,9 +7,9 @@ import {
     List,
     SelectInput,
     SimpleForm,
-    SingleFieldList,
     TextField,
     TextInput,
+    useRecordContext,
 } from 'react-admin';
 
 export const ApiInfoList = (props) => {
@@ -21,8 +21,6 @@ export const ApiInfoList = (props) => {
         },
         []
     )
-
-
     return (
         <List {...props}>
             <Datagrid rowClick="edit">
@@ -30,13 +28,28 @@ export const ApiInfoList = (props) => {
                 <TextField source="collection"/>
                 <TextField source="displayName"/>
                 <TextField source="urlInfo.serviceName"/>
-                <TextField source="fields"/>
-                <SingleFieldList>
-                    <ChipField source="fields"/>
-                </SingleFieldList>
+                {/*<TextField source="fields"/>*/}
+                {/*<SingleFieldList label="fields">*/}
+                <ArrayChipField source="fields"/>
+                {/*</SingleFieldList>*/}
                 <TextField source="notCheckFields"/>
             </Datagrid>
         </List>
+    );
+}
+
+const ArrayChipField = (props) => {
+    const record = useRecordContext(props);
+    console.log("record : ", record);
+
+    const recordOutput = record.fields.map((field, index) => {
+        console.log("field, index : ", field, index);
+        return (<ChipField> {field} </ChipField>);
+    });
+
+    console.log("recordOutput : ", recordOutput);
+    return (
+        recordOutput
     );
 }
 
