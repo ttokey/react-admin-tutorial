@@ -1,16 +1,15 @@
 import * as React from "react";
 import {useEffect} from "react";
 import {
-    AutocompleteArrayInput,
     ChipField,
     Datagrid,
     Edit,
     List,
     SelectInput,
     SimpleForm,
-    SingleFieldList,
     TextField,
     TextInput,
+    useRecordContext,
 } from 'react-admin';
 
 export const ApiInfoList = (props) => {
@@ -22,22 +21,35 @@ export const ApiInfoList = (props) => {
         },
         []
     )
-
-
     return (
         <List {...props}>
             <Datagrid rowClick="edit">
                 <TextField source="id"/>
                 <TextField source="collection"/>
                 <TextField source="displayName"/>
-                <TextField source="urlInfo.serviceName"/>
+                <TextField source="urlInfo.serviceName" label="Service Name"/>
                 <TextField source="fields"/>
-                <SingleFieldList>
-                    <ChipField source="fields"/>
-                </SingleFieldList>
+                {/*<SingleFieldList label="fields">*/}
+                {/*<ArrayChipField source="fields"/>*/}
+                {/*</SingleFieldList>*/}
                 <TextField source="notCheckFields"/>
             </Datagrid>
         </List>
+    );
+}
+
+const ArrayChipField = (props) => {
+    const record = useRecordContext(props);
+    console.log("record : ", record);
+
+    const recordOutput = record.fields.map((field, index) => {
+        console.log("field, index : ", field, index);
+        return (<ChipField> {field} </ChipField>);
+    });
+
+    console.log("recordOutput : ", recordOutput);
+    return (
+        recordOutput
     );
 }
 
@@ -71,11 +83,13 @@ export const ApiInfoEdit = props => (
     <Edit title={<PostTitle/>} {...props}>
         <SimpleForm>
             <TextInput disabled source="id"/>
-            {/*<TextInput source="collection"/>*/}
+            <TextInput source="collection"/>
             <SelectInput source="collection" allowEmpty choices={collectionChoice}/>
             <TextInput source="displayName"/>
-            <AutocompleteArrayInput source="fields" create choices={fieldChoice}/>
-            <AutocompleteArrayInput source="notCheckFields" choices={notCheckFieldChoice}/>
+            <TextInput source="fields"/>
+            <TextInput source="notCheckFields"/>
+            {/*<AutocompleteArrayInput source="fields" create choices={fieldChoice}/>*/}
+            {/*<AutocompleteArrayInput source="notCheckFields" choices={notCheckFieldChoice}/>*/}
             <TextInput source="urlInfo.serviceName"/>
             <TextInput source="urlInfo.getAPI"/>
             <TextInput source="urlInfo.getByIdAPI"/>

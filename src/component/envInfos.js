@@ -3,7 +3,7 @@ import {Create, Datagrid, Edit, List, SimpleForm, TextField, TextInput} from 're
 
 
 export const envInfoList = props => (
-    <List {...props} filters={envInfoFilter}>
+    <List {...props}>
         <Datagrid rowClick="edit">
             <TextField source="id"/>
             <TextField source="env"/>
