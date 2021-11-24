@@ -31,6 +31,10 @@ export const ApiInfoList = (props) => {
                 <TextField source="fields"/>
                 {/*<SingleFieldList label="fields">*/}
                 {/*<ArrayChipField source="fields"/>*/}
+                <TextField source="urlInfo.serviceName"/>
+                {/*<TextField source="fields"/>*/}
+                {/*<SingleFieldList label="fields">*/}
+                <ArrayChipField source="fields"/>
                 {/*</SingleFieldList>*/}
                 <TextField source="notCheckFields"/>
             </Datagrid>
