@@ -2,7 +2,16 @@ import {fetchUtils} from 'react-admin';
 import {stringify} from 'query-string';
 
 const apiUrl = 'http://localhost:1234';
-const httpClient = fetchUtils.fetchJson;
+
+const httpClient = (url, options = {}) => {
+    if (!options.headers) {
+        options.headers = new Headers({Accept: 'application/json'});
+    }
+    const {token} = JSON.parse(localStorage.getItem('auth'));
+    options.headers.set('X-AUTH-TOKEN', `Bearer ${token}`);
+    return fetchUtils.fetchJson(url, options);
+};
+
 
 export default {
     getList: (resource, params) => {

@@ -20,7 +20,6 @@ import 'mdbreact/dist/css/mdb.css';
 const envInfoProvider = jsonServerProvider('http://localhost:1234');
 
 const App = () => {
-
     return (
         <Admin dataProvider={myDataProvider} dashboard={Dashboard} authProvider={authProvider}>
             {/*<Resource name="users" list={UserList}/>*/}

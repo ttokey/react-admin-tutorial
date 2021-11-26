@@ -118,17 +118,11 @@ export const DiffAndTransfer = (props) => {
         const response = await postTransfer(collection, sourceEnv, targetEnv, ids);
     }
 
-    <
-    <
-    <
-    <
-    <
-    << HEAD
-        const collectionOption=[
-        {value: 'nlu', label: 'nlu', realValue: 'nlu'},
-        {value: 'view', label: 'view', realValue: 'view'},
-        {value: 'control', label: 'control', realValue: 'control'},
-]
+    const collectionOption = [
+            {value: 'nlu', label: 'nlu', realValue: 'nlu'},
+            {value: 'view', label: 'view', realValue: 'view'},
+            {value: 'control', label: 'control', realValue: 'control'},
+        ]
     ;
 
     const envOption = [
@@ -138,12 +132,6 @@ export const DiffAndTransfer = (props) => {
         {value: "test", label: "test", realValue: "test"},
         {value: "prod", label: "prod", realValue: "prod"},
     ];
-======
-    =
->>>>>>>
-    010
-    882
-    a8bde26664dbc195e129d790a3d64d1811
 
     return (
         <CContainer>
@@ -196,31 +184,3 @@ export const DiffAndTransfer = (props) => {
         </CContainer>
     );
 }
-
-<
-<
-<
-<
-<
-<< HEAD
-
-    =======
-    const collectionOption=[
-    {value: 'nlu', label: 'nlu', realValue: 'nlu'},
-    {value: 'view', label: 'view', realValue: 'view'},
-    {value: 'control', label: 'control', realValue: 'control'},
-]
-;
-
-const envOption = [
-    {value: "local", label: "local", realValue: "local"},
-    {value: "local2", label: "local2", realValue: "local2"},
-    {value: "dev", label: "dev", realValue: "dev"},
-    {value: "test", label: "test", realValue: "test"},
-    {value: "prod", label: "prod", realValue: "prod"},
-];
->>>>>>>
-010
-882
-a8bde26664dbc195e129d790a3d64d1811
-
