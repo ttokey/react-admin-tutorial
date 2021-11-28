@@ -2,7 +2,7 @@ import * as React from 'react';
 import {useEffect, useState} from 'react';
 import {CButton, CCol, CContainer, CRow} from "@coreui/react";
 import Select from "react-select";
-import {getDiff, getDiffStatusList, postTransfer} from "../service/transferDataProvider";
+import {getApiCollection, getDiff, getDiffStatusList, getEnvs, postTransfer} from "../service/transferDataProvider";
 import DataTable from 'react-data-table-component'
 import {DiffModal} from "./DiffModal";
 
@@ -28,6 +28,11 @@ export const DiffAndTransfer = (props) => {
         diffData: "",
     });
 
+
+    // const collectionOption = makeCollections();
+
+    const [collectionOption, setCollectionOption] = useState([]);
+    const [envOption, setEnvOption] = useState([]);
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [toggleCleared, setToggleCleared] = React.useState(false);
 
@@ -40,7 +45,7 @@ export const DiffAndTransfer = (props) => {
     }, []);
 
     const handleTransfer = () => {
-        if (window.confirm(`정말로 이관하시겠습니까?`)) {
+        if (window.confirm(`이관하시겠습니까?`)) {
             setToggleCleared(!toggleCleared);
             doTransfer(selectedRows.map(row => row.id)).then(() =>
                 getDiffStatus()
@@ -55,12 +60,62 @@ export const DiffAndTransfer = (props) => {
         [collection, sourceEnv, targetEnv]
     )
 
-
     useEffect(() => {
             setColumn(makeColumns);
             setData(diffStatus.list);
         }, [diffStatus]
     )
+
+    useEffect(() => {
+            makeCollections();
+        }, []
+    )
+
+    const makeCollections = () => {
+        getApiCollection().then((response) => {
+            console.log("response get :", response)
+            const collectionMap = [];
+            response.map(collection => {
+                let jsonMap = new Object();
+                jsonMap.value = collection;
+                jsonMap.label = collection;
+                jsonMap.realValue = collection;
+                collectionMap.push(jsonMap);
+            })
+            setCollectionOption(collectionMap);
+        });
+
+        getEnvs().then((response) => {
+            console.log("response env get :", response)
+            const collectionMap = [];
+            response.map(collection => {
+                let jsonMap = new Object();
+                jsonMap.value = collection;
+                jsonMap.label = collection;
+                jsonMap.realValue = collection;
+                collectionMap.push(jsonMap);
+            })
+            setEnvOption(collectionMap);
+        });
+    };
+
+
+    // const collectionOption = makeCollections();
+
+    const collectionOption2 = [
+        {value: 'nlu', label: 'nlu', realValue: 'nlu'},
+        {value: 'view', label: 'view', realValue: 'view'},
+        {value: 'control', label: 'control', realValue: 'control'},
+    ];
+
+    const envOption2 = [
+        {value: "local", label: "local", realValue: "local"},
+        {value: "local2", label: "local2", realValue: "local2"},
+        {value: "dev", label: "dev", realValue: "dev"},
+        {value: "test", label: "test", realValue: "test"},
+        {value: "prod", label: "prod", realValue: "prod"},
+    ];
+
 
     const makeColumn = () => {
         const toMap = diffStatus.fields.map(field => {
@@ -86,7 +141,7 @@ export const DiffAndTransfer = (props) => {
             selector: row => row.status,
             sortable: true,
         },
-    ]
+    ];
 
     const makeColumns = () => {
         const result = [
@@ -94,7 +149,7 @@ export const DiffAndTransfer = (props) => {
             ...makeColumn(),
         ]
         return result;
-    }
+    };
 
 
     // data provides access to your row data
@@ -118,20 +173,6 @@ export const DiffAndTransfer = (props) => {
         const response = await postTransfer(collection, sourceEnv, targetEnv, ids);
     }
 
-    const collectionOption = [
-            {value: 'nlu', label: 'nlu', realValue: 'nlu'},
-            {value: 'view', label: 'view', realValue: 'view'},
-            {value: 'control', label: 'control', realValue: 'control'},
-        ]
-    ;
-
-    const envOption = [
-        {value: "local", label: "local", realValue: "local"},
-        {value: "local2", label: "local2", realValue: "local2"},
-        {value: "dev", label: "dev", realValue: "dev"},
-        {value: "test", label: "test", realValue: "test"},
-        {value: "prod", label: "prod", realValue: "prod"},
-    ];
 
     return (
         <CContainer>
@@ -142,7 +183,6 @@ export const DiffAndTransfer = (props) => {
                         onChange={(e) => handleSelect(e, setCollection)}
                         options={collectionOption}
                     />
-
                 </CCol>
                 <CCol md={2}>
                     <div>source</div>

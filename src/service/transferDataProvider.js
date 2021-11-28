@@ -54,3 +54,17 @@ export const postData = async (env, data) => {
     )
     return response.data;
 }
+
+export const getApiCollection = async () => {
+    const response = await axios.get(
+        `${apiUrl}/apiInfo/collections`
+    )
+    return response.data;
+}
+
+export const getEnvs = async () => {
+    const response = await axios.get(
+        `${apiUrl}/envInfo/envs`
+    )
+    return response.data;
+}

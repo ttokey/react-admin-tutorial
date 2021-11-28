@@ -5,7 +5,7 @@ import Dashboard from "./Dashboard";
 import authProvider from "./service/authProvider";
 import jsonServerProvider from 'ra-data-json-server';
 import myDataProvider from "./service/myDataProvider";
-import {ApiInfoEdit, ApiInfoList} from "./component/apiInfos";
+import {ApiInfoCreate, ApiInfoEdit, ApiInfoList} from "./component/apiInfos";
 import {DiffAndTransfer} from "./component/diffAndTransfer";
 import {envInfoCreate, envInfoEdit, envInfoList} from "./component/envInfos";
 
@@ -25,7 +25,7 @@ const App = () => {
             {/*<Resource name="users" list={UserList}/>*/}
             {/*<Resource name="posts" list={PostList} edit={PostEdit} create={PostCreate}/>*/}
             <Resource name="envInfo" list={envInfoList} create={envInfoCreate} edit={envInfoEdit}/>
-            <Resource name="apiInfo" list={ApiInfoList} edit={ApiInfoEdit}/>
+            <Resource name="apiInfo" list={ApiInfoList} create={ApiInfoCreate} edit={ApiInfoEdit}/>
             {/*<Resource name="transfer" list={transferList}/>*/}
             <Resource name="diffAndTransfer" options={{label: 'diffAndTransfer'}} list={DiffAndTransfer}/>
         </Admin>
